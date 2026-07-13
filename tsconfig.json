@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "outDir": "dist",
+    "rootDir": ".",
+    "types": ["node", "vitest/globals"],
+    "baseUrl": ".",
+    "paths": {
+      "@foxsecura/anti-nuke": ["./src/index.ts"],
+      "@foxsecura/anti-nuke/core": ["./src/core/index.ts"],
+      "@foxsecura/anti-nuke/discordjs": ["./src/adapters/discordjs/index.ts"],
+      "@foxsecura/anti-nuke/modules": ["./src/modules/index.ts"],
+      "@foxsecura/anti-nuke/presets": ["./src/presets/index.ts"]
+    }
+  },
+  "include": ["src", "tests", "examples", "vitest.config.ts"],
+  "exclude": ["dist", "node_modules"]
+}
