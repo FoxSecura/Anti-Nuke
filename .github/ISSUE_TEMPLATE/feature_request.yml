@@ -1,0 +1,24 @@
+name: Feature request
+description: Propose a detector, adapter, or API improvement
+title: "[Feature]: "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What security problem should this solve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: Describe configuration, evidence, and expected incidents.
+    validations:
+      required: true
+  - type: textarea
+    id: safety
+    attributes:
+      label: Safety considerations
+      description: Explain false-positive risks and why enforcement remains host-controlled.
