@@ -19,7 +19,6 @@
     "outDir": "dist",
     "rootDir": ".",
     "types": ["node", "vitest/globals"],
-    "baseUrl": ".",
     "paths": {
       "@foxsecura/anti-nuke": ["./src/index.ts"],
       "@foxsecura/anti-nuke/core": ["./src/core/index.ts"],
