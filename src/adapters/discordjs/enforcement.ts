@@ -1,8 +1,8 @@
 import {
-  PermissionFlagsBits,
   type Client,
   type GuildMember,
   type GuildTextBasedChannel,
+  PermissionFlagsBits,
 } from "discord.js";
 import type { AntiNukeIncident, NukeSeverity } from "../../core/types.js";
 import type {

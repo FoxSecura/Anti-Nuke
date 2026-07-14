@@ -1,7 +1,7 @@
 import type { Client } from "discord.js";
 import { describe, expect, it, vi } from "vitest";
-import type { AntiNukeIncident } from "../src/core/types.js";
 import { enforceAntiNukeIncident } from "../src/adapters/discordjs/enforcement.js";
+import type { AntiNukeIncident } from "../src/core/types.js";
 
 const incident: AntiNukeIncident = {
   id: "incident-1",
