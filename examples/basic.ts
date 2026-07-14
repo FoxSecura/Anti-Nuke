@@ -3,14 +3,29 @@ import { createDefaultAntiNukePreset } from "@foxsecura/anti-nuke/presets";
 import { Client, GatewayIntentBits } from "discord.js";
 
 const client = new Client({
-  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildModeration],
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMembers,
+    GatewayIntentBits.GuildModeration,
+  ],
 });
 
 const antiNuke = new DiscordJsAntiNuke(client, {
   modules: createDefaultAntiNukePreset(),
-  onIncident: async (incident) => {
-    console.warn("Anti-nuke incident", incident);
-    // Your bot decides whether to revoke access, freeze changes, or lock down the guild.
+  enforcement: {
+    enabled: true,
+    removeDangerousRoles: true,
+    timeout: {
+      enabled: true,
+      durationMs: 60 * 60 * 1000,
+      minimumSeverity: "high",
+    },
+    ban: {
+      enabled: false,
+    },
+  },
+  onIncident: (incident) => {
+    console.warn(`[FoxSecura Anti-Nuke] ${incident.summary}`);
   },
 });
 
