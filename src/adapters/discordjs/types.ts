@@ -51,10 +51,7 @@ export interface DiscordJsAntiNukeEnforcementOptions {
     | ((result: DiscordJsAntiNukeEnforcementResult) => void | Promise<void>)
     | undefined;
   readonly onError?:
-    | ((
-        error: unknown,
-        context: DiscordJsAntiNukeEnforcementErrorContext,
-      ) => void | Promise<void>)
+    | ((error: unknown, context: DiscordJsAntiNukeEnforcementErrorContext) => void | Promise<void>)
     | undefined;
 }
 

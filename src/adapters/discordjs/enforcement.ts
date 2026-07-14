@@ -34,7 +34,10 @@ function hasMinimumSeverity(current: NukeSeverity, minimum: NukeSeverity): boole
   return severityOrder[current] >= severityOrder[minimum];
 }
 
-function reasonFor(incident: AntiNukeIncident, options: DiscordJsAntiNukeEnforcementOptions): string {
+function reasonFor(
+  incident: AntiNukeIncident,
+  options: DiscordJsAntiNukeEnforcementOptions,
+): string {
   const prefix = options.reasonPrefix ?? "FoxSecura Anti-Nuke";
   return `${prefix}: ${incident.moduleId} (${incident.id})`.slice(0, 512);
 }
@@ -126,7 +129,8 @@ export async function enforceAntiNukeIncident(
   }
 
   const results: DiscordJsAntiNukeEnforcementResult[] = [];
-  const guild = client.guilds.cache.get(incident.guildId) ?? (await client.guilds.fetch(incident.guildId));
+  const guild =
+    client.guilds.cache.get(incident.guildId) ?? (await client.guilds.fetch(incident.guildId));
   const reason = reasonFor(incident, options);
   let member: GuildMember | null | undefined;
 
