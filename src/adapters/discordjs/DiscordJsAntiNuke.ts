@@ -1,11 +1,13 @@
 import { type Client, Events, type Guild, type GuildAuditLogsEntry } from "discord.js";
 import { AntiNukeEngine } from "../../core/AntiNukeEngine.js";
-import type { GuildMutationEvent } from "../../core/types.js";
+import type { AntiNukeIncident, GuildMutationEvent } from "../../core/types.js";
+import { enforceAntiNukeIncident } from "./enforcement.js";
 import { toGuildMutationEvent } from "./toGuildMutationEvent.js";
 import type { DiscordJsAntiNukeOptions } from "./types.js";
 
 export class DiscordJsAntiNuke {
   readonly #engine: AntiNukeEngine;
+  readonly #enforcement: DiscordJsAntiNukeOptions["enforcement"];
   #started = false;
 
   constructor(
@@ -14,9 +16,13 @@ export class DiscordJsAntiNuke {
   ) {
     const ignoredGuildIds = new Set(options.ignoredGuildIds ?? []);
     const ignoredExecutorIds = new Set(options.ignoredExecutorIds ?? []);
+    this.#enforcement = options.enforcement;
+
     this.#engine = new AntiNukeEngine({
       modules: options.modules,
-      onIncident: options.onIncident,
+      onIncident: async (incident) => {
+        await options.onIncident?.(incident);
+      },
       ...(options.onModuleError ? { onModuleError: options.onModuleError } : {}),
       shouldIgnore: async (event) => {
         if (ignoredGuildIds.has(event.guildId)) return true;
@@ -40,8 +46,12 @@ export class DiscordJsAntiNuke {
     this.#started = false;
   }
 
-  async handle(event: GuildMutationEvent): Promise<void> {
-    await this.#engine.handle(event);
+  async handle(event: GuildMutationEvent): Promise<readonly AntiNukeIncident[]> {
+    const incidents = await this.#engine.handle(event);
+    for (const incident of incidents) {
+      await enforceAntiNukeIncident(this.client, incident, this.#enforcement);
+    }
+    return incidents;
   }
 
   readonly #onAuditLogEntryCreate = async (
@@ -49,6 +59,6 @@ export class DiscordJsAntiNuke {
     guild: Guild,
   ): Promise<void> => {
     const event = toGuildMutationEvent(entry, guild);
-    if (event) await this.#engine.handle(event);
+    if (event) await this.handle(event);
   };
 }
