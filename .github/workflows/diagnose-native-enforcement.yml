@@ -1,4 +1,4 @@
-name: Diagnose native enforcement branch
+name: Fix native enforcement branch
 
 on:
   push:
@@ -8,7 +8,7 @@ permissions:
   contents: write
 
 jobs:
-  diagnose:
+  fix:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -18,10 +18,10 @@ jobs:
         with:
           node-version: 22
       - run: npm install
-      - run: npm run check > .github/native-enforcement-diagnostics.txt 2>&1 || true
+      - run: npx biome check --write .
       - run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add .github/native-enforcement-diagnostics.txt
-          git diff --cached --quiet || git commit -m "chore: capture native enforcement diagnostics"
+          git add .
+          git diff --cached --quiet || git commit -m "style: apply safe Biome fixes"
           git push
